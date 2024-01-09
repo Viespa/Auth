@@ -1,3 +1,3 @@
 # Auth App
 
-![Auth](public/auth.png)
+![Auth](public/auth.PNG)
