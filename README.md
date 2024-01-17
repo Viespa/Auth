@@ -1,8 +1,6 @@
-# Auth App
+# Escalidraw of project
 
-# First Page
-
-![Auth](public/auth.PNG)
+![Escalidraw](public/escalidraw.png)
 
 # Login Page
 
