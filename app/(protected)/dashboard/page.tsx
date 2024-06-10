@@ -11,20 +11,14 @@ const DashboardPage = async () => {
     var name = session?.user.name
     var avatar_url = session?.user.image
     return (
-        <div>
-        
-        
-        <ResizablePanelGroup direction="horizontal">
-            <ResizablePanel>
-                <div className="flex">
-                    <Sidebar user_name={name}  avatar_url={avatar_url} />
-
-                </div>
-    </ResizablePanel>
-            <ResizableHandle />
-            <ResizablePanel>Two</ResizablePanel>      
-        </ResizablePanelGroup>
-
+<div>
+        {JSON.stringify(session)}
+        <form action={async () =>{
+            "use server";
+            await signOut();
+        }}>
+            <button type="submit">Sign out</button>
+        </form>
         </div>
     );
     };
