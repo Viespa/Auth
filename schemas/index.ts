@@ -30,3 +30,11 @@ export const RegisterSchema = z.object({
         message: 'Please enter a valid name.',
     }).max(100),
 });
+
+
+export const HomeSchema = z.object({
+   
+    name: z.string().min(2,{
+        message: 'Please enter a valid name.',
+    }).max(100),
+});
