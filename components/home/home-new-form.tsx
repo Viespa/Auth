@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { useSearchParams } from 'next/navigation';
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { LoginSchema } from "@/schemas";
+import { HomeSchema } from "@/schemas";
 import { Input } from '@/components/ui/input';
 
 import {
@@ -25,27 +25,35 @@ import { CardWrapper } from "@/components/auth/card-wrapper";
 import { Button } from '@/components/ui/button';
 import { FormError } from '@/components/form-error';
 import { FormSucces } from '@/components/form-succes';
-import { login } from '@/actions/login';
+import { createHomeGroup } from '@/actions/select-home';
 import Link from 'next/link';
 
 export const HomeForm = () => {
     const searchParams = useSearchParams();
    
 
-    const urlError = searchParams.get('error') === "OAuthAccountNotLinkedError" ? "Name not correct" : undefined;
+   
     const [error, setError] = useState< string | undefined >('');
     const [success, setSuccess] = useState< string | undefined >('');
     const [isPending, startTransition] = useTransition();
 
-    const form = useForm<z.infer<typeof LoginSchema>>({
-        resolver: zodResolver(LoginSchema),
+    const form = useForm<z.infer<typeof HomeSchema>>({
+        resolver: zodResolver(HomeSchema),
         defaultValues: {
             name: "",
         },
     });
 
-    const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-      console.log(values);
+    const onSubmit = (values: z.infer<typeof HomeSchema>) => {
+      
+      setError(''); 
+      setSuccess('');
+      
+      startTransition(() => {
+        createHomeGroup(values.name, 'clxhrvuu10000142j23hmul7d')
+      });
+      
+      
     }
 
     return (
@@ -58,14 +66,13 @@ export const HomeForm = () => {
                 <>
               <FormField
                 control={form.control}
-                name='home-name'
+                name='name'
                 render={({ field }) => ( 
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
                       <Input 
                         
-                       
                         placeholder='Home Name'
                         type='text'
                       />
@@ -78,10 +85,9 @@ export const HomeForm = () => {
               </>
 
             </div>
-            <FormError  message={error || urlError } />
+            <FormError  message={error } />
             <FormSucces  message={success}/>
               <Button
-              disabled={isPending}
               type='submit'
               className='w-full'
               >
