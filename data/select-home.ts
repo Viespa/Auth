@@ -17,28 +17,28 @@ export const getHomeGroupsByUserId = async (userId: string) => {
         return null;
     }
 }
-
 export const createHomeGroup = async (name: string, userId: string) => {
     try {
-        const group = await db.homeGroup.create({
+        const newHomeGroup = await db.homeGroup.create({
             data: {
-            name,
-            image: '/public/home-group-default.png',
-            members: {
-                connect: {
-                id: userId,
+                name: name,
+                image: '/public/home-group-default.png',
+                members: {
+                    connect: {
+                        id: userId,
+                    },
                 },
-            },
-            owner: {
-                connect: {
-                id: userId,
+                owner: {
+                    connect: {
+                        id: userId,
+                    },
                 },
-            },
             },
         });
-        return group;
+        return newHomeGroup;
     } catch (error) {
-        return null;
+        console.error('Error creating home group:', error);
+        throw error;
     }
 }
 

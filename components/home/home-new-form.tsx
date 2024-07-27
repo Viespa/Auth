@@ -5,7 +5,7 @@ import * as z from 'zod';
 
 import { useState, useTransition } from 'react';
 import { useForm } from "react-hook-form";
-import { useSearchParams } from 'next/navigation';
+
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { HomeSchema } from "@/schemas";
@@ -21,16 +21,14 @@ import {
 } from "@/components/ui/form";
 
 
-import { CardWrapper } from "@/components/auth/card-wrapper";
 import { Button } from '@/components/ui/button';
 import { FormError } from '@/components/form-error';
 import { FormSucces } from '@/components/form-succes';
-import { createHomeGroup } from '@/actions/select-home';
-import Link from 'next/link';
+import { newHome } from '@/actions/new-home';
+
 
 export const HomeForm = () => {
-    const searchParams = useSearchParams();
-   
+ 
 
    
     const [error, setError] = useState< string | undefined >('');
@@ -44,16 +42,26 @@ export const HomeForm = () => {
         },
     });
 
-    const onSubmit = (values: z.infer<typeof HomeSchema>) => {
-      
-      setError(''); 
-      setSuccess('');
-      
-      startTransition(() => {
-        createHomeGroup(values.name, 'clxhrvuu10000142j23hmul7d')
-      });
-      
-      
+    const onSubmit = async (values: z.infer<typeof HomeSchema>) => {
+          
+          setError(''); 
+          setSuccess('');
+          startTransition(async () => {
+            newHome(values)
+            .then((data) => {
+              if(data?.error){
+                form.reset();
+                setError(data.error);
+              }
+              if(data?.success){
+                form.reset();
+                setSuccess(data.success);
+              }
+             })
+             .catch(() => {
+               setError('An error occurred');
+             })
+          });
     }
 
     return (
@@ -63,7 +71,7 @@ export const HomeForm = () => {
                   className='space-y-6'
             >
             <div className='space-y-4'>
-                <>
+               
               <FormField
                 control={form.control}
                 name='name'
@@ -72,20 +80,17 @@ export const HomeForm = () => {
                     <FormLabel>Name</FormLabel>
                     <FormControl>
                       <Input 
-                        
                         placeholder='Home Name'
                         type='text'
+                        disabled={isPending}
                       />
                     </FormControl>
                     <FormMessage {...field} />
                   </FormItem>
                 )}
               />
-              
-              </>
-
             </div>
-            <FormError  message={error } />
+            <FormError  message={error} />
             <FormSucces  message={success}/>
               <Button
               type='submit'
