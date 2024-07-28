@@ -12,17 +12,19 @@ const DashboardPage = async () => {
     var user_id = session?.user.id;
     var avatar_url = session?.user.image;
     const userHome = await getHome(user_id ?? '');
-   
+    
     return (
         <div>
-           
+           {JSON.stringify(session)}
+    <form action={async () =>{
+        "use server";
+        await signOut();
+    }}>
+        <button type="submit">Sign out</button>
+    </form>
             {await checkAnyHome(user_id ?? '') ? (
                 <div>
-                    <div>
-                        <h1>Welcome, {userHome}!</h1>
-                        <p>Your home ID is: {userHome?.id}</p>
-                       
-                    </div>
+                   
 
                 </div>
             ) : (
