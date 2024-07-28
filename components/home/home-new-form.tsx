@@ -29,8 +29,6 @@ import { newHome } from '@/actions/new-home';
 
 export const HomeForm = () => {
  
-
-   
     const [error, setError] = useState< string | undefined >('');
     const [success, setSuccess] = useState< string | undefined >('');
     const [isPending, startTransition] = useTransition();
@@ -80,6 +78,7 @@ export const HomeForm = () => {
                     <FormLabel>Name</FormLabel>
                     <FormControl>
                       <Input 
+                        {...field}
                         placeholder='Home Name'
                         type='text'
                         disabled={isPending}

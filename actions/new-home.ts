@@ -4,7 +4,7 @@ import * as z from 'zod';
 import { HomeSchema } from "@/schemas";
 import { checkUserInAnyHomeGroup, createHomeGroup, getHomeGroupsByUserId } from '@/data/select-home';
 export const newHome = async (
-    values: z.infer<typeof HomeSchema>) => {
+    values: z.infer<typeof HomeSchema>,) => {
     const validateFields = HomeSchema.safeParse(values);
     if (!validateFields.success) {
         return { error: 'Invalid fields' };
@@ -13,7 +13,7 @@ export const newHome = async (
     
     // Create a new home
 
-    const newHome = createHomeGroup(name, 'clxhrvuu10000142j23hmul7d');
+    const newHome = createHomeGroup(name, 'clz5mrq0w00012y10bdsz91qg');
     if (!newHome) {
         return { error: 'Failed to create home' };
     }
